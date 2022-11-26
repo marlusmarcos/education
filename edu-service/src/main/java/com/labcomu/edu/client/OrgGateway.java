@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.reactive.function.client.WebClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,6 +23,7 @@ public class OrgGateway {
         this.fetchOrganizationUrl = properties.getUrl().getFetchOrganizationDetails();
     }
 
+    @CircuitBreaker(name = "missaoOne", fallbackMethod = "getOrganizationFallback")
     public Organization getOrganization(@NotNull final String url) {
         return webClientBuilder.build()
                 .get()
@@ -31,4 +33,11 @@ public class OrgGateway {
                 .bodyToMono(Organization.class)
                 .block();
     }
+
+    public Organization getOrganizationFallback (Exception e) {
+        System.out.println ("VIXE, Não foi possível processsar sua informação");
+        Organization org = new Organization ();
+
+        return null;
+     }
 }

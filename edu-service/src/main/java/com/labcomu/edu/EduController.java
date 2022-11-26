@@ -1,5 +1,6 @@
 package com.labcomu.edu;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import com.labcomu.edu.resource.Organization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -17,8 +18,16 @@ import javax.validation.constraints.NotNull;
 public class EduController {
   private final EduService service;
 
-  @GetMapping("organization/{url}")
-  public Organization getOrganization(@NotNull @PathVariable String url) {
-    return service.getOrganization(url);
+  @GetMapping("organization/{url}") 
+  public ResponseEntity<?> getOrganization(@NotNull @PathVariable String url)  {
+    Organization org =  service.getOrganization(url);
+    if (org != null) {
+      return ResponseEntity.ok(org);
+    }
+    //return new Exception ("VIXE, Não foi possível processsar sua informação no Controller!!");
+    //return new ResponseEntity<>(HttpStatus.BAD_REQUEST, reason = "Erro no orgService");
+     //return  ResponseEntity.notFound().build();
+    String erro = "Erro no OrgService, retorno do controler";
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
   }
 }

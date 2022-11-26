@@ -29,3 +29,10 @@ app:
   url:
     fetch-organization-details: ${app.gateways.org.url}/org/organization/{url}
     fetch-researcher-details: ${app.gateways.orcid.url}/orcid/researcher/{orcid}
+resilience4j:
+  circuitbreaker:
+    instances:
+      missaoOne:
+        minimumNumberOfCalls: 3
+        slidingWindowSize: 6
+

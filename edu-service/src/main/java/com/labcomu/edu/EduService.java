@@ -16,7 +16,12 @@ public class EduService {
 
     public Organization getOrganization(String url) {
         Organization organization = orgGateway.getOrganization(url);
-        organization.setResearchers(organization.getResearchers().stream().map(researcher -> orcidGateway.getResearcher(researcher.getOrcid())).toList());
-        return organization;
+        if (organization != null) {
+            organization.setResearchers(organization.getResearchers().stream().map(researcher -> orcidGateway.getResearcher(researcher.getOrcid())).toList());
+            return organization;
+        }
+        return null;
+        
+        
     }
 }
