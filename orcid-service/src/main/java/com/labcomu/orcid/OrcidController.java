@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.labcomu.faultinjection.annotation.Throw;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,7 +23,9 @@ public class OrcidController {
         return service.isActive();
     }
 
+    
     @GetMapping("researcher/{orcid}")
+    @Throw(exception=RuntimeException.class, threshold=0.5)
     public Researcher getResearcher(@NotNull @PathVariable String orcid) {
         return service.getResearcher(orcid);
     }

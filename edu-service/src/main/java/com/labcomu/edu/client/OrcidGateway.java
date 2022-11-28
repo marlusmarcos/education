@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.reactive.function.client.WebClient;
+import io.github.resilience4j.retry.annotation.Retry;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,7 +23,7 @@ public class OrcidGateway {
         this.fetchResearcherUrl = properties.getUrl().getFetchResearcherDetails();
 
     }
-
+    @Retry (name = "getResearchersRetry") 
     public Researcher getResearcher(@NotNull final String orcid) {
         return webClientBuilder.build()
                 .get()
