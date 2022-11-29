@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import com.labcomu.faultinjection.annotation.Delay;
 import javax.validation.constraints.NotNull;
 
 @RestController
@@ -18,6 +18,7 @@ public class OrgController {
   private final OrgService service;
 
   @GetMapping("organization/{url}")
+  @Delay(value=5, threshold=0.9)
   public ResponseEntity<ResourceOrganization> getOrganization(@NotNull @PathVariable String url) {
     return ResponseEntity.of(service.getOrganization(url));
   }
